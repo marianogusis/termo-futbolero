@@ -511,7 +511,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
       <div style={{ maxWidth: 440, width: "100%", transition: "opacity 0.6s ease, transform 0.6s ease", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)" }}>
 
         {/* Card para captura */}
-        <div ref={cardRef} style={{ background: "#090c10", padding: "4px 0 16px", borderRadius: 20 }}>
+        <div ref={cardRef} style={{ background: "#090c10", padding: "4px 0 4px", borderRadius: 20, overflow: "hidden" }}>
         {/* Score hero */}
         <div style={{ textAlign: "center", marginBottom: 28, padding: "36px 24px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 24, position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 300, height: 300, background: `radial-gradient(circle, ${categoria.color}20 0%, transparent 70%)`, pointerEvents: "none" }} />
@@ -551,6 +551,8 @@ function Resultado({ respuestas, onReiniciar }: any) {
           {dimsParaMostrar.map(d => <DimBar key={d.label} {...d} />)}
         </div>
 
+        </div>{/* end cardRef */}
+
         {/* Roasts */}
         <div style={{ padding: "24px", background: "rgba(239,68,68,0.05)", border: "1px solid rgba(239,68,68,0.15)", borderRadius: 20, marginBottom: 24 }}>
           <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#f87171", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>🎯 TE DESCRIBE</div>
@@ -561,8 +563,6 @@ function Resultado({ respuestas, onReiniciar }: any) {
             </div>
           ))}
         </div>
-
-        </div>{/* end cardRef */}
 
         {/* Desafío viral */}
         <div style={{ padding: "24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, marginBottom: 24, textAlign: "center" }}>
