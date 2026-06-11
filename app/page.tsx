@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, useMemo } from "react";
-import { track } from "@vercel/analytics/react";
+import { track } from "@vercel/analytics";
 
 // ─── DATASET ───────────────────────────────────────────────────────────────
 
