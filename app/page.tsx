@@ -462,8 +462,14 @@ function Resultado({ respuestas, onReiniciar }: any) {
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(textoCompartir)}&url=${encodeURIComponent(SITE_URL)}`, "_blank");
   };
 
-  const compartirFacebook = () => {
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SITE_URL)}`, "_blank");
+  const [linkCopiado, setLinkCopiado] = useState(false);
+
+  const copiarLink = async () => {
+    try {
+      await navigator.clipboard.writeText(SITE_URL);
+      setLinkCopiado(true);
+      setTimeout(() => setLinkCopiado(false), 2500);
+    } catch { }
   };
 
   const descargarImagen = async () => {
@@ -568,12 +574,17 @@ function Resultado({ respuestas, onReiniciar }: any) {
 
         {/* Botones de compartir */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
-          <button onClick={descargarImagen} disabled={descargando} style={{
-            padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
-            background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
-          }}>
-            {descargando ? "⏳ Generando..." : "📸 Descargar imagen"}
-          </button>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <button onClick={descargarImagen} disabled={descargando} style={{
+              padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
+              background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
+            }}>
+              {descargando ? "⏳ Generando..." : "📸 Descargar imagen"}
+            </button>
+            <p style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "#475569", textAlign: "center", lineHeight: 1.4 }}>
+              Guardá la imagen y compartila en Instagram, TikTok o Facebook Stories 📲
+            </p>
+          </div>
           <button onClick={compartirWhatsApp} style={{
             padding: "14px", borderRadius: 12, border: "1px solid rgba(37,211,102,0.3)", cursor: "pointer",
             background: "rgba(37,211,102,0.1)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#25d366",
@@ -586,11 +597,11 @@ function Resultado({ respuestas, onReiniciar }: any) {
           }}>
             𝕏  Compartir
           </button>
-          <button onClick={compartirFacebook} style={{
-            padding: "14px", borderRadius: 12, border: "1px solid rgba(24,119,242,0.3)", cursor: "pointer",
-            background: "rgba(24,119,242,0.1)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#5b9bff",
+          <button onClick={copiarLink} style={{
+            padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
+            background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
           }}>
-            f  Facebook
+            {linkCopiado ? "✓ Link copiado" : "🔗 Copiar link"}
           </button>
         </div>
 
@@ -602,7 +613,6 @@ function Resultado({ respuestas, onReiniciar }: any) {
         </button>
 
         <p style={{ textAlign: "center", marginTop: 14, fontFamily: "var(--font-body)", fontSize: 13, color: "#475569", lineHeight: 1.4 }}>
-          Para Instagram y TikTok: descargá la imagen y subila a tu historia. 📲<br />
           Podés tocar todos los botones que quieras. ¡Compartilo donde quieras! 🚀
         </p>
 
