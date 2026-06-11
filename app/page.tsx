@@ -537,7 +537,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
           </div>
           <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#475569", marginTop: 2, marginBottom: 16 }}>/100</div>
 
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 20px", borderRadius: 99, background: `${categoria.color}20`, border: `1px solid ${categoria.color}40`, fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: categoria.color, letterSpacing: "0.04em", textTransform: "uppercase" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 20px", borderRadius: 99, fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: categoria.color, letterSpacing: "0.04em", textTransform: "uppercase" }}>
             <span style={{ fontSize: 14, lineHeight: 1 }}>{categoria.emoji}</span>
             <span>{categoria.label}</span>
           </div>
@@ -594,51 +594,68 @@ function Resultado({ respuestas, onReiniciar }: any) {
           </button>
         </div>
 
-        {/* Botones de compartir — izquierda: X + Jugar de nuevo | derecha: Guardar + Copiar link */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
-          {/* Columna izquierda */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 10, justifyContent: "space-between" }}>
-            <button onClick={compartirX} style={{
-              padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", cursor: "pointer",
-              background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
-            }}>
-              𝕏  Compartir
-            </button>
-            <div style={{ flex: 1 }} />
-            <button onClick={onReiniciar} style={{
-              padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
-              background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
-            }}>
-              🔄 Jugar de nuevo
-            </button>
+        {/* Botones de compartir — mobile vs desktop */}
+        {/iPhone|iPad|iPod/i.test(typeof navigator !== "undefined" ? navigator.userAgent : "") ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 10 }}>
+            {/* Screenshot hint — ancho completo */}
+            <div style={{ padding: "16px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)",
+              background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 13, color: "#e2e8f0", textAlign: "center", lineHeight: 1.6 }}>
+              📸 Hacé screenshot para guardar la imagen y compartila en Instagram, TikTok o Facebook Stories 📲
+            </div>
+            {/* X izquierda, Jugar de nuevo derecha */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <button onClick={compartirX} style={{
+                padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", cursor: "pointer",
+                background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
+              }}>
+                𝕏  Compartir
+              </button>
+              <button onClick={onReiniciar} style={{
+                padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
+                background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
+              }}>
+                🔄 Jugar de nuevo
+              </button>
+            </div>
           </div>
-
-          {/* Columna derecha */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            {/iPhone|iPad|iPod/i.test(typeof navigator !== "undefined" ? navigator.userAgent : "") ? (
-              <div style={{ padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)",
-                background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 13, fontWeight: 600, color: "#e2e8f0", textAlign: "center", lineHeight: 1.5 }}>
-                📸 Hacé screenshot para guardar y compartir
-              </div>
-            ) : (
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
+            {/* Columna izquierda — desktop */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, justifyContent: "space-between" }}>
+              <button onClick={compartirX} style={{
+                padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", cursor: "pointer",
+                background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
+              }}>
+                𝕏  Compartir
+              </button>
+              <div style={{ flex: 1 }} />
+              <button onClick={onReiniciar} style={{
+                padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
+                background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
+              }}>
+                🔄 Jugar de nuevo
+              </button>
+            </div>
+            {/* Columna derecha — desktop */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               <button onClick={descargarImagen} disabled={descargando} style={{
                 padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
                 background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
               }}>
                 {descargando ? "⏳ Generando..." : "📸 Guardar imagen"}
               </button>
-            )}
-            <p style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "#64748b", textAlign: "center", lineHeight: 1.4 }}>
-              Guardá la imagen y compartila en Instagram, TikTok o Facebook Stories 📲
-            </p>
-            <button onClick={copiarLink} style={{
-              padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
-              background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
-            }}>
-              {linkCopiado ? "✓ Link copiado" : "🔗 Copiar link"}
-            </button>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "#64748b", textAlign: "center", lineHeight: 1.4 }}>
+                Guardá la imagen y compartila en Instagram, TikTok o Facebook Stories 📲
+              </p>
+              <button onClick={copiarLink} style={{
+                padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
+                background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
+              }}>
+                {linkCopiado ? "✓ Link copiado" : "🔗 Copiar link"}
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         <p style={{ textAlign: "center", marginTop: 14, fontFamily: "var(--font-body)", fontSize: 13, color: "#64748b", lineHeight: 1.4 }}>
           Podés tocar todos los botones que quieras. ¡Compartilo donde quieras! 🚀
