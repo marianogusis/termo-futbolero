@@ -322,22 +322,20 @@ function Juego({ onFinalizar }: any) {
     if (animando) return;
     setSeleccionado(opcion);
     setAnimando(true);
-    setTimeout(() => {
-      const nuevas = [...respuestas, { pregunta, opcion }];
-      if (idx < PREGUNTAS.length - 1) {
-        setFadeIn(false);
-        setTimeout(() => {
-          setIdx(idx + 1);
-          setSeleccionado(null);
-          setAnimando(false);
-          setFadeIn(true);
-        }, 180);
+    const nuevas = [...respuestas, { pregunta, opcion }];
+    if (idx < PREGUNTAS.length - 1) {
+      setFadeIn(false);
+      setTimeout(() => {
+        setIdx(idx + 1);
+        setSeleccionado(null);
+        setAnimando(false);
+        setFadeIn(true);
         setRespuestas(nuevas);
-      } else {
-        setRespuestas(nuevas);
-        setTimeout(() => onFinalizar(nuevas), 200);
-      }
-    }, 350);
+      }, 220);
+    } else {
+      setRespuestas(nuevas);
+      setTimeout(() => onFinalizar(nuevas), 220);
+    }
   };
 
   return (
@@ -348,7 +346,7 @@ function Juego({ onFinalizar }: any) {
 
       <div style={{
         flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-        padding: "20px", transition: "opacity 0.18s ease", opacity: fadeIn ? 1 : 0,
+        padding: "20px", transition: "opacity 0.22s ease-in-out", opacity: fadeIn ? 1 : 0,
       }}>
         <div style={{ maxWidth: 440, width: "100%" }}>
 
