@@ -242,7 +242,7 @@ const DimBar = ({ label, value, color }: any) => (
 
 function Landing({ onStart }: any) {
   const [visible, setVisible] = useState(false);
-  useEffect(() => { setTimeout(() => setVisible(true), 50); }, []);
+  useEffect(() => { if (!visible) setTimeout(() => setVisible(true), 50); }, []);
 
   return (
     <div style={{
@@ -440,7 +440,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
   const [copied, setCopied] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { setTimeout(() => setVisible(true), 100); }, []);
+  useEffect(() => { if (!visible) setTimeout(() => setVisible(true), 100); }, []);
 
   const dimColors = {
     Pasión: "#ef4444", Nostalgia: "#8b5cf6", Romanticismo: "#ec4899",
@@ -473,7 +473,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
     setDescargando(true);
     try {
       const html2canvas = (await import("html2canvas" as any)).default;
-      const canvas = await html2canvas(cardRef.current, { backgroundColor: "#090c10", scale: 2, useCORS: true });
+      const canvas = await html2canvas(cardRef.current, { backgroundColor: "#090c10", scale: 2, useCORS: true, allowTaint: true, logging: false, onclone: (doc: any) => { doc.querySelectorAll("*").forEach((el: any) => { const s = el.style; if (s.webkitTextFillColor) s.webkitTextFillColor = s.color || "#fff"; }); } });
       const link = document.createElement("a");
       link.download = "que-tan-termo-sos.png";
       link.href = canvas.toDataURL("image/png");
