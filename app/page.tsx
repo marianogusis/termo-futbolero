@@ -97,7 +97,7 @@ const PERFILES = [
 
 const ROASTS_POR_PERFIL = {
   "termo-nuclear": ["Hablás de fútbol en situaciones que no tienen nada que ver con el fútbol.","Recordás exactamente dónde estabas en cada gol histórico de tu vida.","Tu pareja ya sabe que en día de clásico no existís.","Insultar al árbitro es tu cardio diario.","Que tu equipo pierda un partido te arruina el día.","El festejo de Qatar 2022 fue el momento más feliz de tu vida adulta. Y no te avergüenza.","Tu psicólogo ya desistió de explicarte que es solo un deporte."],
-  "bilardista": ["Para vos un empate 0-0 es un resultado válido y defendible.","Para vos la ética en el fútbol es un lujo de los que no ganan.","Le explicaste a alguien por qué el 0-0 fue 'un buen resultado' y te creyeron.","Ganar feo te genera más satisfacción que perder jugando bien.","Para vos subcampeón es el primero de los perdedores.","Tu respuesta ante cualquier crítica es '¿y cuántos títulos tenés?'."],
+  "bilardista": ["Para vos un empate 0-0 es un resultado válido y defendible.","Para vos la ética en el fútbol es un lujo de los que no ganan.","Nunca festejaste un gol tan lindo como un triunfo 1-0 en el último minuto.","Ganar feo te genera más satisfacción que perder jugando bien.","Para vos subcampeón es el primero de los perdedores.","Tu respuesta ante cualquier crítica es '¿y cuántos títulos tenés?'."],
   "menottista": ["Analizás el juego de un equipo que acaba de perder y encontrás cosas para destacar.","Preferirías empatar un partido importante jugando bien que ganarlo con un penal dudoso.","En cualquier debate de fútbol, vos sos 'el de la estética'.","Aplaudiste un gol que no fue de tu equipo porque fue hermoso.","Defendiste a un jugador porque 'tenía muy buena técnica' aunque errara mucho.","Alguna vez dijiste 'prefiero que no salgan campeones si van a jugar así'."],
   "nostalgico": ["Todavía no superaste la era del Diego. Nunca lo vas a superar.","Tenés álbumes de figuritas de varios mundiales atesorados entre tus recuerdos.","Ver fútbol moderno te genera una mezcla de nostalgia y decepción.","Tu once ideal tiene al menos siete jugadores retirados.","Defendés jugadores de los 90 en discusiones con gente que no los vio jugar.","Creés que el fútbol murió en algún punto entre 1995 y 2005."],
   "anti-sistema": ["Para vos el VAR arruinó la civilización occidental.","Tenés una teoría conspirativa para cada resultado que no te gustó.","El árbitro siempre cobra en contra de tu equipo. Siempre. Sin excepción.","Cuando tu equipo gana, fue mérito. Cuando pierde, fue robo.","Creés que la FIFA, la AFA y el VAR son parte del mismo complot.","Para vos cada derrota tiene un culpable. Y nunca es tu equipo."],
@@ -537,7 +537,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
           </div>
           <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#475569", marginTop: 2, marginBottom: 16 }}>/100</div>
 
-          <div style={{ display: "inline-block", padding: "8px 20px", borderRadius: 99, background: `${categoria.color}20`, border: `1px solid ${categoria.color}40`, fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: categoria.color, letterSpacing: "0.04em" }}>
+          <div style={{ display: "inline-block", padding: "8px 20px", borderRadius: 99, background: `${categoria.color}20`, border: `1px solid ${categoria.color}40`, fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: categoria.color, letterSpacing: "0.04em", textTransform: "uppercase" }}>
             {categoria.emoji} {categoria.label}
           </div>
         </div>
@@ -596,13 +596,14 @@ function Resultado({ respuestas, onReiniciar }: any) {
         {/* Botones de compartir — izquierda: X + Jugar de nuevo | derecha: Guardar + Copiar link */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
           {/* Columna izquierda */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, justifyContent: "space-between" }}>
             <button onClick={compartirX} style={{
               padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", cursor: "pointer",
               background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
             }}>
               𝕏  Compartir
             </button>
+            <div style={{ flex: 1 }} />
             <button onClick={onReiniciar} style={{
               padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
               background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
