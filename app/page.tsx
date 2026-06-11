@@ -195,11 +195,6 @@ function getCategoria(score: number) {
   if (score <= 66) return { label: "Futbolero", emoji: "⚽", color: "#4ade80" };
   if (score <= 80) return { label: "Termo", emoji: "🔥", color: "#f97316" };
   return { label: "Termo Nuclear", emoji: "🌋", color: "#ef4444" };
-};
-  if (score <= 40) return { label: "SIMPATIZANTE OCASIONAL", color: "#0ea5e9", emoji: "👀" };
-  if (score <= 60) return { label: "FUTBOLERO", color: "#f59e0b", emoji: "⚽" };
-  if (score <= 80) return { label: "TERMO", color: "#f97316", emoji: "🔥" };
-  return { label: "TERMO NUCLEAR", color: "#ef4444", emoji: "🌋" };
 }
 
 // ─── COMPONENTS ──────────────────────────────────────────────────────────────
