@@ -589,12 +589,29 @@ function Resultado({ respuestas, onReiniciar }: any) {
             background: "linear-gradient(135deg, #f97316, #ef4444)",
             fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: "0.04em",
           }}>
-            {copied ? "✓ COPIADO AL PORTAPAPELES" : "🔥 DESAFIALOS"}
+            {copied ? "✓ COPIADO AL PORTAPAPELES" : "🔥 DESAFIALOS (WhatsApp)"}
           </button>
         </div>
 
-        {/* Botones de compartir */}
+        {/* Botones de compartir — izquierda: X + Jugar de nuevo | derecha: Guardar + Copiar link */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
+          {/* Columna izquierda */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <button onClick={compartirX} style={{
+              padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", cursor: "pointer",
+              background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
+            }}>
+              𝕏  Compartir
+            </button>
+            <button onClick={onReiniciar} style={{
+              padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
+              background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
+            }}>
+              🔄 Jugar de nuevo
+            </button>
+          </div>
+
+          {/* Columna derecha */}
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             <button onClick={descargarImagen} disabled={descargando} style={{
               padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
@@ -605,28 +622,14 @@ function Resultado({ respuestas, onReiniciar }: any) {
             <p style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "#64748b", textAlign: "center", lineHeight: 1.4 }}>
               Guardá la imagen y compartila en Instagram, TikTok o Facebook Stories 📲
             </p>
+            <button onClick={copiarLink} style={{
+              padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
+              background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
+            }}>
+              {linkCopiado ? "✓ Link copiado" : "🔗 Copiar link"}
+            </button>
           </div>
-
-          <button onClick={compartirX} style={{
-            padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", cursor: "pointer",
-            background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
-          }}>
-            𝕏  Compartir
-          </button>
-          <button onClick={copiarLink} style={{
-            padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
-            background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
-          }}>
-            {linkCopiado ? "✓ Link copiado" : "🔗 Copiar link"}
-          </button>
         </div>
-
-        <button onClick={onReiniciar} style={{
-          width: "100%", padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
-          background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
-        }}>
-          🔄 Jugar de nuevo
-        </button>
 
         <p style={{ textAlign: "center", marginTop: 14, fontFamily: "var(--font-body)", fontSize: 13, color: "#64748b", lineHeight: 1.4 }}>
           Podés tocar todos los botones que quieras. ¡Compartilo donde quieras! 🚀
