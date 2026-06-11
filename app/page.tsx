@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { track } from "@vercel/analytics/react";
 
 // ─── DATASET ───────────────────────────────────────────────────────────────
 
@@ -184,9 +185,7 @@ function calcularResultado(respuestas: any[]) {
 
   // 5. Roasts del perfil
   const pool = (ROASTS_POR_PERFIL as any)[mejorPerfil!.id] || ROASTS_POR_PERFIL["futbolero-de-bar"];
-  const roasts = [...pool].sort(() => Math.random() - 0.5).slice(0, 3);
-
-  return { termismoScore, dims, normalized, perfil: mejorPerfil!, roasts };
+  return { termismoScore, dims, normalized, perfil: mejorPerfil!, pool };
 }
 
 
@@ -433,13 +432,21 @@ function OpcionCard({ texto, lado, seleccionado, rechazado, onClick }: any) {
 
 function Resultado({ respuestas, onReiniciar }: any) {
   const resultado = calcularResultado(respuestas);
-  const { termismoScore, normalized, perfil, roasts } = resultado;
+  const { termismoScore, normalized, perfil, pool } = resultado;
+  const roasts = useMemo(() => [...(pool as string[])].sort(() => Math.random() - 0.5).slice(0, 3), [perfil.id]);
   const categoria = getCategoria(termismoScore);
   const [visible, setVisible] = useState(false);
   const [copied, setCopied] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { if (!visible) setTimeout(() => setVisible(true), 100); }, []);
+  useEffect(() => {
+    if (!visible) setTimeout(() => setVisible(true), 100);
+    track("quiz_completado", {
+      perfil: perfil.id,
+      score: termismoScore,
+      categoria: categoria.label,
+    });
+  }, []);
 
   const dimColors = {
     Pasión: "#ef4444", Nostalgia: "#8b5cf6", Romanticismo: "#ec4899",
@@ -455,8 +462,9 @@ function Resultado({ respuestas, onReiniciar }: any) {
   const textoConLink = `${textoCompartir}\n${SITE_URL}`;
   const [descargando, setDescargando] = useState(false);
 
-  const compartirWhatsApp = () => {
-    window.open(`https://wa.me/?text=${encodeURIComponent(textoConLink)}`, "_blank");
+  const desafiar = () => {
+    const url = `https://wa.me/?text=${encodeURIComponent(textoConLink)}`;
+    window.open(url, "_blank");
   };
 
   const compartirX = () => {
@@ -478,16 +486,24 @@ function Resultado({ respuestas, onReiniciar }: any) {
     setDescargando(true);
     try {
       const domtoimage = (await import("dom-to-image-more" as any)).default;
-      const dataUrl = await domtoimage.toPng(cardRef.current, { 
-        quality: 1, 
+      const dataUrl = await domtoimage.toPng(cardRef.current, {
+        quality: 1,
         scale: 2,
         bgcolor: "#090c10",
-        style: { borderRadius: "0" }
       });
-      const link = document.createElement("a");
-      link.download = "que-tan-termo-sos.png";
-      link.href = dataUrl;
-      link.click();
+      // Mobile-friendly download
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile) {
+        const img = new Image();
+        img.src = dataUrl;
+        const w = window.open("");
+        if (w) { w.document.write(img.outerHTML); w.document.close(); }
+      } else {
+        const link = document.createElement("a");
+        link.download = "que-tan-termo-sos.png";
+        link.href = dataUrl;
+        link.click();
+      }
     } catch (e) {
       console.error("Error al generar imagen:", e);
     } finally {
@@ -573,7 +589,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
           <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "#64748b", marginBottom: 16 }}>
             Mandales el desafío y que demuestren cuán termos son.
           </p>
-          <button onClick={compartir} style={{
+          <button onClick={desafiar} style={{
             width: "100%", padding: "16px", borderRadius: 12, border: "none", cursor: "pointer",
             background: "linear-gradient(135deg, #f97316, #ef4444)",
             fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: "0.04em",
@@ -595,12 +611,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
               Guardá la imagen y compartila en Instagram, TikTok o Facebook Stories 📲
             </p>
           </div>
-          <button onClick={compartirWhatsApp} style={{
-            padding: "14px", borderRadius: 12, border: "1px solid rgba(37,211,102,0.3)", cursor: "pointer",
-            background: "rgba(37,211,102,0.1)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#25d366",
-          }}>
-            💬 WhatsApp
-          </button>
+
           <button onClick={compartirX} style={{
             padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", cursor: "pointer",
             background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
