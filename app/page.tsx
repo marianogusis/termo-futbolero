@@ -152,12 +152,8 @@ function calcularResultado(respuestas: any[]) {
 
   // 3. Score de Termismo: pasión + termismo + antisistema + nostalgia suman;
   //    racionalidad penaliza fuerte, modernidad y romanticismo penalizan suave.
-  const caliente = normalized.Termismo * 0.34 + normalized.Pasión * 0.26 + normalized.AntiSistema * 0.22 + normalized.Nostalgia * 0.18;
-  const penal = Math.max(0,
-    (normalized.Racionalidad - 50) * 0.16 +
-    (normalized.Modernidad - 50) * 0.08 +
-    (normalized.Romanticismo - 50) * 0.05
-  );
+  const caliente = normalized.Termismo * 0.38 + normalized.Pasión * 0.30 + normalized.AntiSistema * 0.22 + normalized.Resultadismo * 0.10;
+  const penal = Math.max(0, (normalized.Racionalidad - 50) * 0.16 + (normalized.Modernidad - 50) * 0.10);
   const termismoScore = Math.min(96, Math.max(18, Math.round((caliente - penal) * 0.62 + 33)));
 
   // 4. Perfil = tu rasgo más marcado (z-score sobre la media de jugadores).
@@ -195,7 +191,12 @@ function calcularResultado(respuestas: any[]) {
 
 
 function getCategoria(score: number) {
-  if (score <= 20) return { label: "PECHO FRÍO CERTIFICADO", color: "#64748b", emoji: "🧊" };
+  if (score <= 25) return { label: "Pecho Frío", emoji: "🥶", color: "#64748b" };
+  if (score <= 55) return { label: "Simpatizante", emoji: "👀", color: "#22d3ee" };
+  if (score <= 66) return { label: "Futbolero", emoji: "⚽", color: "#4ade80" };
+  if (score <= 80) return { label: "Termo", emoji: "🔥", color: "#f97316" };
+  return { label: "Termo Nuclear", emoji: "🌋", color: "#ef4444" };
+};
   if (score <= 40) return { label: "SIMPATIZANTE OCASIONAL", color: "#0ea5e9", emoji: "👀" };
   if (score <= 60) return { label: "FUTBOLERO", color: "#f59e0b", emoji: "⚽" };
   if (score <= 80) return { label: "TERMO", color: "#f97316", emoji: "🔥" };
