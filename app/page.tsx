@@ -451,7 +451,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
   const dimsParaMostrar = ["Pasión", "Nostalgia", "Romanticismo", "Resultadismo", "Modernidad", "Racionalidad"]
     .map(k => ({ label: k, value: normalized[k] || 0, color: (dimColors as any)[k] }));
 
-  const SITE_URL = "https://que-tan-termo-sos.vercel.app";
+  const SITE_URL = "https://termo-futbolero.vercel.app";
   const textoCompartir = `Saqué ${termismoScore}/100 en "¿Qué tan termo sos?" 🔥\n${categoria.label} · Perfil: ${perfil.nombre}\n\n¿Me podés superar? 👇`;
   const textoConLink = `${textoCompartir}\n${SITE_URL}`;
   const [descargando, setDescargando] = useState(false);
