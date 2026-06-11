@@ -600,7 +600,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
             {/* Screenshot hint — ancho completo */}
             <div style={{ padding: "16px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)",
               background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 13, color: "#e2e8f0", textAlign: "center", lineHeight: 1.6 }}>
-              📸 Hacé screenshot para guardar la imagen y compartila en Instagram, TikTok o Facebook Stories 📲
+              📸 Hacé screenshot arriba para guardar la imagen y compartila en Instagram, TikTok o Facebook Stories 📲
             </div>
             {/* X izquierda, Jugar de nuevo derecha */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
