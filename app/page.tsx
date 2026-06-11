@@ -510,8 +510,10 @@ function Resultado({ respuestas, onReiniciar }: any) {
     <div style={{ minHeight: "100vh", padding: "24px 20px 60px", display: "flex", flexDirection: "column", alignItems: "center" }}>
       <div style={{ maxWidth: 440, width: "100%", transition: "opacity 0.6s ease, transform 0.6s ease", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)" }}>
 
+        {/* Card para captura */}
+        <div ref={cardRef} style={{ background: "#090c10", padding: "4px 0 16px", borderRadius: 20 }}>
         {/* Score hero */}
-        <div ref={cardRef} style={{ textAlign: "center", marginBottom: 28, padding: "36px 24px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 24, position: "relative", overflow: "hidden" }}>
+        <div style={{ textAlign: "center", marginBottom: 28, padding: "36px 24px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 24, position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 300, height: 300, background: `radial-gradient(circle, ${categoria.color}20 0%, transparent 70%)`, pointerEvents: "none" }} />
 
           <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#64748b", letterSpacing: "0.15em", marginBottom: 16, textTransform: "uppercase" }}>
@@ -560,6 +562,8 @@ function Resultado({ respuestas, onReiniciar }: any) {
           ))}
         </div>
 
+        </div>{/* end cardRef */}
+
         {/* Desafío viral */}
         <div style={{ padding: "24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, marginBottom: 24, textAlign: "center" }}>
           <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: "#f1f5f9", marginBottom: 8, letterSpacing: "-0.01em" }}>
@@ -584,7 +588,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
               padding: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
               background: "rgba(255,255,255,0.05)", fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#e2e8f0",
             }}>
-              {descargando ? "⏳ Generando..." : "📸 Descargar imagen"}
+              {descargando ? "⏳ Generando..." : "📸 Guardar imagen"}
             </button>
             <p style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "#64748b", textAlign: "center", lineHeight: 1.4 }}>
               Guardá la imagen y compartila en Instagram, TikTok o Facebook Stories 📲
@@ -625,10 +629,10 @@ function Resultado({ respuestas, onReiniciar }: any) {
           ¿QUÉ TAN TERMO SOS?
         </p>
         <div style={{ textAlign: "center", marginTop: 20, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "#94a3b8", letterSpacing: "0.02em", marginBottom: 6, fontStyle: "italic" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "#94a3b8", letterSpacing: "0.02em", marginBottom: 6 }}>
             Vamos por la cuarta 🏆
           </p>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "#94a3b8", letterSpacing: "0.02em", fontStyle: "italic" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "#94a3b8", letterSpacing: "0.02em" }}>
             Elijo creer 🙏
           </p>
         </div>
