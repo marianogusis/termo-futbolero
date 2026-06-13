@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     locale: "es_AR",
     images: [
       {
-        url: "https://termo-futbolero.vercel.app/og-image.png",
+        url: "https://quetantermo.com.ar/og-image.png",
         width: 1200,
         height: 630,
         alt: "¿Qué tan termo sos?",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: "¿Qué tan termo sos?",
     description:
       "30 decisiones futboleras. Descubrí tu nivel de termismo y tu perfil argento-futbolístico. 🇦🇷⚽",
-    images: ["https://termo-futbolero.vercel.app/og-image.png"],
+    images: ["https://quetantermo.com.ar/og-image.png"],
   },
 };
 
