@@ -458,11 +458,13 @@ function Resultado({ respuestas, onReiniciar }: any) {
   const [descargando, setDescargando] = useState(false);
 
   const desafiar = () => {
+    track("compartido", { canal: "whatsapp", perfil: perfil.id, score: termismoScore });
     const url = `https://wa.me/?text=${encodeURIComponent(textoConLink)}`;
     window.open(url, "_blank");
   };
 
   const compartirX = () => {
+    track("compartido", { canal: "x", perfil: perfil.id, score: termismoScore });
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(textoCompartir)}&url=${encodeURIComponent(SITE_URL)}`, "_blank");
   };
 
@@ -470,6 +472,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
 
   const copiarLink = async () => {
     try {
+      track("compartido", { canal: "copiar_link", perfil: perfil.id, score: termismoScore });
       await navigator.clipboard.writeText(SITE_URL);
       setLinkCopiado(true);
       setTimeout(() => setLinkCopiado(false), 2500);
