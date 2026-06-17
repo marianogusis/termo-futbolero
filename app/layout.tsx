@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: "¿Qué tan termo sos?",
@@ -48,6 +49,7 @@ export default function RootLayout({
         {children}
         <Analytics />
       </body>
+      <GoogleAnalytics gaId="G-BY38WQT502" />
     </html>
   );
 }

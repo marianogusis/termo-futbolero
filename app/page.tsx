@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { track } from "@vercel/analytics";
+import { sendGAEvent } from "@next/third-parties/google";
 
 // ─── DATASET ───────────────────────────────────────────────────────────────
 
@@ -255,7 +256,7 @@ function Landing({ onStart }: any) {
           ⚽ TEST FUTBOLERO 🇦🇷
         </div>
         <p style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#475569", letterSpacing: "0.1em", marginBottom: 20, textTransform: "uppercase" }}>
-          Previa Argentina vs Argelia
+          Previa Argentina vs Austria
         </p>
 
         {/* Title */}
@@ -441,6 +442,11 @@ function Resultado({ respuestas, onReiniciar }: any) {
       score: termismoScore,
       categoria: categoria.label,
     });
+    sendGAEvent("event", "quiz_completado", {
+      perfil: perfil.id,
+      score: termismoScore,
+      categoria: categoria.label,
+    });
   }, []);
 
   const dimColors = {
@@ -459,12 +465,14 @@ function Resultado({ respuestas, onReiniciar }: any) {
 
   const desafiar = () => {
     track("compartido", { canal: "whatsapp", perfil: perfil.id, score: termismoScore });
+    sendGAEvent("event", "compartido", { canal: "whatsapp", perfil: perfil.id, score: termismoScore });
     const url = `https://wa.me/?text=${encodeURIComponent(textoConLink)}`;
     window.open(url, "_blank");
   };
 
   const compartirX = () => {
     track("compartido", { canal: "x", perfil: perfil.id, score: termismoScore });
+    sendGAEvent("event", "compartido", { canal: "x", perfil: perfil.id, score: termismoScore });
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(textoCompartir)}&url=${encodeURIComponent(SITE_URL)}`, "_blank");
   };
 
@@ -473,6 +481,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
   const copiarLink = async () => {
     try {
       track("compartido", { canal: "copiar_link", perfil: perfil.id, score: termismoScore });
+      sendGAEvent("event", "compartido", { canal: "copiar_link", perfil: perfil.id, score: termismoScore });
       await navigator.clipboard.writeText(SITE_URL);
       setLinkCopiado(true);
       setTimeout(() => setLinkCopiado(false), 2500);
@@ -481,6 +490,8 @@ function Resultado({ respuestas, onReiniciar }: any) {
 
   const descargarImagen = async () => {
     if (!cardRef.current) return;
+    track("compartido", { canal: "guardar_imagen", perfil: perfil.id, score: termismoScore });
+    sendGAEvent("event", "compartido", { canal: "guardar_imagen", perfil: perfil.id, score: termismoScore });
     setDescargando(true);
     try {
       const domtoimage = (await import("dom-to-image-more" as any)).default;
