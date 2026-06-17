@@ -697,7 +697,11 @@ export default function App() {
   const [pantalla, setPantalla] = useState("landing");
   const [respuestas, setRespuestas] = useState<any[]>([]);
 
-  const handleStart = () => setPantalla("juego");
+  const handleStart = () => {
+    track("quiz_iniciado", {});
+    sendGAEvent("event", "quiz_iniciado", {});
+    setPantalla("juego");
+  };
   const handleFinalizar = (r: any) => { setRespuestas(r); setPantalla("resultado"); };
   const handleReiniciar = () => { setRespuestas([]); setPantalla("landing"); };
 
