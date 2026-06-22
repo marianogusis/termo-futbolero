@@ -219,13 +219,16 @@ function calcularPercentil(score: number): number {
   return 50;
 }
 
-function getTextoPercentil(score: number): { texto: string; emoji: string } {
-  const p = calcularPercentil(score);
+function formatearPercentil(p: number): { texto: string; emoji: string } {
   if (p >= 50) {
     return { texto: `Sos más termo que el ${p}% de los jugadores`, emoji: "🔥" };
   } else {
     return { texto: `Sos menos termo que el ${100 - p}% de los jugadores`, emoji: "🧉" };
   }
+}
+
+function getTextoPercentil(score: number): { texto: string; emoji: string } {
+  return formatearPercentil(calcularPercentil(score));
 }
 
 // ─── COMPONENTS ──────────────────────────────────────────────────────────────
@@ -461,7 +464,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
   const { termismoScore, normalized, perfil, pool } = resultado;
   const roasts = useMemo(() => [...(pool as string[])].sort(() => Math.random() - 0.5).slice(0, 3), [perfil.id]);
   const categoria = getCategoria(termismoScore);
-  const { texto: textoPercentil, emoji: emojiPercentil } = getTextoPercentil(termismoScore);
+  const [percentilData, setPercentilData] = useState(getTextoPercentil(termismoScore));
   const [visible, setVisible] = useState(false);
   const [copied, setCopied] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -478,6 +481,20 @@ function Resultado({ respuestas, onReiniciar }: any) {
       score: termismoScore,
       categoria: categoria.label,
     });
+
+    // Guardar score y obtener percentil real (si hay ≥100 registros)
+    fetch("/api/scores", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ score: termismoScore, categoria: categoria.label, perfil: perfil.id }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (typeof data.percentil === "number") {
+          setPercentilData(formatearPercentil(data.percentil));
+        }
+      })
+      .catch(() => {}); // falla silenciosamente, queda el percentil simulado
   }, []);
 
   const dimColors = {
@@ -589,7 +606,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
 
           <div style={{ marginTop: 14, padding: "8px 20px", borderRadius: 10, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", display: "inline-block" }}>
             <span style={{ fontFamily: "var(--font-body)", fontSize: 14, color: "#cbd5e1" }}>
-              {emojiPercentil} {textoPercentil}
+              {percentilData.emoji} {percentilData.texto}
             </span>
           </div>
         </div>
