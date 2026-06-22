@@ -289,7 +289,7 @@ function Landing({ onStart }: any) {
           ⚽ TEST FUTBOLERO 🇦🇷
         </div>
         <p style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#475569", letterSpacing: "0.1em", marginBottom: 20, textTransform: "uppercase" }}>
-          Previa Argentina vs Austria
+          Previa Argentina vs Jordania
         </p>
 
         {/* Title */}
