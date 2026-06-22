@@ -198,6 +198,36 @@ function getCategoria(score: number) {
   return { label: "Termo Nuclear", emoji: "🌋", color: "#ef4444" };
 }
 
+// ─── PERCENTIL SIMULADO ───────────────────────────────────────────────────────
+// Distribución calibrada con 6000 jugadores simulados.
+// Buckets: [min, max, cumStart%, bucketPct%]
+
+function calcularPercentil(score: number): number {
+  const buckets = [
+    { min: 0,  max: 25, cumStart: 0,    pct: 0    }, // Pecho Frío (~0%)
+    { min: 26, max: 55, cumStart: 0,    pct: 7.5  }, // Simpatizante
+    { min: 56, max: 66, cumStart: 7.5,  pct: 40.5 }, // Futbolero
+    { min: 67, max: 80, cumStart: 48.0, pct: 46.8 }, // Termo
+    { min: 81, max: 96, cumStart: 94.8, pct: 5.2  }, // Termo Nuclear
+  ];
+  for (const b of buckets) {
+    if (score >= b.min && score <= b.max) {
+      const pos = (score - b.min) / (b.max - b.min + 1);
+      return Math.round(b.cumStart + b.pct * pos);
+    }
+  }
+  return 50;
+}
+
+function getTextoPercentil(score: number): { texto: string; emoji: string } {
+  const p = calcularPercentil(score);
+  if (p >= 50) {
+    return { texto: `Sos más termo que el ${p}% de los jugadores`, emoji: "🔥" };
+  } else {
+    return { texto: `Sos menos termo que el ${100 - p}% de los jugadores`, emoji: "🧉" };
+  }
+}
+
 // ─── COMPONENTS ──────────────────────────────────────────────────────────────
 
 const GrainOverlay = () => (
@@ -431,6 +461,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
   const { termismoScore, normalized, perfil, pool } = resultado;
   const roasts = useMemo(() => [...(pool as string[])].sort(() => Math.random() - 0.5).slice(0, 3), [perfil.id]);
   const categoria = getCategoria(termismoScore);
+  const { texto: textoPercentil, emoji: emojiPercentil } = getTextoPercentil(termismoScore);
   const [visible, setVisible] = useState(false);
   const [copied, setCopied] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -554,6 +585,12 @@ function Resultado({ respuestas, onReiniciar }: any) {
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 20px", borderRadius: 99, fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: categoria.color, letterSpacing: "0.04em", textTransform: "uppercase" }}>
             <span style={{ fontSize: 14, lineHeight: 1 }}>{categoria.emoji}</span>
             <span>{categoria.label}</span>
+          </div>
+
+          <div style={{ marginTop: 14, padding: "8px 20px", borderRadius: 10, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", display: "inline-block" }}>
+            <span style={{ fontFamily: "var(--font-body)", fontSize: 14, color: "#cbd5e1" }}>
+              {emojiPercentil} {textoPercentil}
+            </span>
           </div>
         </div>
 
