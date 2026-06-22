@@ -507,7 +507,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
     .map(k => ({ label: k, value: normalized[k] || 0, color: (dimColors as any)[k] }));
 
   const SITE_URL = "https://quetantermo.com.ar";
-  const textoCompartir = `Saqué ${termismoScore}/100 en "¿Qué tan termo sos?" 🔥\nPerfil: ${perfil.nombre}\n\n¿Vos qué tan termo sos? 👇`;
+  const textoCompartir = `Saqué ${termismoScore}/100 en "¿Qué tan termo sos?" 🔥\nPerfil: ${perfil.nombre}\n\n¿Vos qué tan termo sos? 🧉`;
   const textoConLink = `${textoCompartir}\n${SITE_URL}`;
   const [descargando, setDescargando] = useState(false);
 
