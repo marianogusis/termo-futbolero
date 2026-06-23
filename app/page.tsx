@@ -820,7 +820,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
                     <span style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: cat.color }}>{s.score}</span>
                     <span style={{ fontSize: 14 }}>{cat.emoji}</span>
                   </div>
-                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#64748b", textAlign: "right", flexShrink: 0, maxWidth: 90, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "#94a3b8", textAlign: "right", flexShrink: 0, maxWidth: 90, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {s.perfil.replace(/-/g, " ").toUpperCase()}
                   </div>
                 </div>
