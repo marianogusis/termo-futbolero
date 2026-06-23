@@ -105,7 +105,7 @@ export default function GrupoPage() {
               {/* Leaderboard actual */}
               {grupo.scores.length > 0 && (
                 <div style={{ padding: "20px 24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, marginBottom: 20 }}>
-                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#475569", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#94a3b8", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>
                     RANKING TERMO DEL GRUPO — {grupo.scores.length} jugador{grupo.scores.length !== 1 ? "es" : ""}
                   </div>
                   {grupo.scores.map((s: any, i: number) => (
@@ -120,7 +120,7 @@ export default function GrupoPage() {
                         <span style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: getCategoriaColor(s.score) }}>{s.score}</span>
                         <span style={{ fontSize: 14 }}>{getCategoriaEmoji(s.score)}</span>
                       </div>
-                      <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "#94a3b8", textAlign: "right", flexShrink: 0, maxWidth: 90, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "#94a3b8", textAlign: "right", flexShrink: 0, maxWidth: 90, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         {s.perfil.replace(/-/g, " ").toUpperCase()}
                       </div>
                     </div>

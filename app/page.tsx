@@ -802,8 +802,9 @@ function Resultado({ respuestas, onReiniciar }: any) {
         {/* Leaderboard de grupo */}
         {grupoId && grupoScores.length > 0 && (
           <div style={{ padding: "24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, marginBottom: 24 }}>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#475569", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#94a3b8", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>
               🏆 RANKING TERMO DEL GRUPO — {grupoScores.length} jugador{grupoScores.length !== 1 ? "es" : ""}
+
             </div>
             {grupoScores.map((s: any, i: number) => {
               const cat = getCategoria(s.score);
@@ -820,7 +821,7 @@ function Resultado({ respuestas, onReiniciar }: any) {
                     <span style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: cat.color }}>{s.score}</span>
                     <span style={{ fontSize: 14 }}>{cat.emoji}</span>
                   </div>
-                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "#94a3b8", textAlign: "right", flexShrink: 0, maxWidth: 90, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "#94a3b8", textAlign: "right", flexShrink: 0, maxWidth: 90, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {s.perfil.replace(/-/g, " ").toUpperCase()}
                   </div>
                 </div>
