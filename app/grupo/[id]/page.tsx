@@ -106,7 +106,7 @@ export default function GrupoPage() {
               {grupo.scores.length > 0 && (
                 <div style={{ padding: "20px 24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, marginBottom: 20 }}>
                   <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#475569", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>
-                    RANKING ACTUAL — {grupo.scores.length} jugador{grupo.scores.length !== 1 ? "es" : ""}
+                    RANKING TERMO DEL GRUPO — {grupo.scores.length} jugador{grupo.scores.length !== 1 ? "es" : ""}
                   </div>
                   {grupo.scores.map((s: any, i: number) => (
                     <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: i < grupo.scores.length - 1 ? 10 : 0 }}>
@@ -116,10 +116,13 @@ export default function GrupoPage() {
                       <div style={{ flex: 1, fontFamily: "var(--font-body)", fontSize: 14, color: "#e2e8f0" }}>
                         {s.player_name}
                       </div>
-                      <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: getCategoriaColor(s.score) }}>
-                        {s.score}
+                      <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
+                        <span style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: getCategoriaColor(s.score) }}>{s.score}</span>
+                        <span style={{ fontSize: 14 }}>{getCategoriaEmoji(s.score)}</span>
                       </div>
-                      <div style={{ fontSize: 16 }}>{getCategoriaEmoji(s.score)}</div>
+                      <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#64748b", textAlign: "right", flexShrink: 0, maxWidth: 90, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {s.perfil.replace(/-/g, " ").toUpperCase()}
+                      </div>
                     </div>
                   ))}
                 </div>
