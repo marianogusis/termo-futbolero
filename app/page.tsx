@@ -817,11 +817,11 @@ function Resultado({ respuestas, onReiniciar }: any) {
                   <div style={{ flex: 1, fontFamily: "var(--font-body)", fontSize: 14, color: esVos ? "#f97316" : "#e2e8f0", fontWeight: esVos ? 600 : 400 }}>
                     {s.player_name}{esVos ? " (vos)" : ""}
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4, width: 60, flexShrink: 0 }}>
                     <span style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: cat.color }}>{s.score}</span>
                     <span style={{ fontSize: 14 }}>{cat.emoji}</span>
                   </div>
-                  <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "#94a3b8", textAlign: "right", flexShrink: 0, maxWidth: 90, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  <div style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "#94a3b8", textAlign: "right", flexShrink: 0, width: 110, whiteSpace: "nowrap" }}>
                     {s.perfil.replace(/-/g, " ").toUpperCase()}
                   </div>
                 </div>

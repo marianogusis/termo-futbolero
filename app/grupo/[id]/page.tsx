@@ -116,11 +116,11 @@ export default function GrupoPage() {
                       <div style={{ flex: 1, fontFamily: "var(--font-body)", fontSize: 14, color: "#e2e8f0" }}>
                         {s.player_name}
                       </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4, width: 60, flexShrink: 0 }}>
                         <span style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: getCategoriaColor(s.score) }}>{s.score}</span>
                         <span style={{ fontSize: 14 }}>{getCategoriaEmoji(s.score)}</span>
                       </div>
-                      <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "#94a3b8", textAlign: "right", flexShrink: 0, maxWidth: 90, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      <div style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "#94a3b8", textAlign: "right", flexShrink: 0, width: 110, whiteSpace: "nowrap" }}>
                         {s.perfil.replace(/-/g, " ").toUpperCase()}
                       </div>
                     </div>
