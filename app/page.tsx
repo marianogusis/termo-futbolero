@@ -495,6 +495,24 @@ function Resultado({ respuestas, onReiniciar }: any) {
         }
       })
       .catch(() => {}); // falla silenciosamente, queda el percentil simulado
+
+    // Detectar modo grupo y guardar score
+    const urlParams = new URLSearchParams(window.location.search);
+    const gId = urlParams.get("grupo");
+    const gJugador = urlParams.get("jugador");
+    if (gId) setGrupoId(gId);
+    if (gJugador) setJugadorNombre(gJugador);
+    if (gId && gJugador) {
+      fetch(`/api/grupos/${gId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ player_name: gJugador, score: termismoScore, categoria: categoria.label, perfil: perfil.id }),
+      })
+        .then(() => fetch(`/api/grupos/${gId}`))
+        .then((r) => r.json())
+        .then((data) => { if (data.scores) setGrupoScores(data.scores); })
+        .catch(() => {});
+    }
   }, []);
 
   const dimColors = {
@@ -510,6 +528,35 @@ function Resultado({ respuestas, onReiniciar }: any) {
   const textoCompartir = `Saqué ${termismoScore}/100 en "¿Qué tan termo sos?" 🔥\nPerfil: ${perfil.nombre}\n\n¿Vos qué tan termo sos? 🧉`;
   const textoConLink = `${textoCompartir}\n${SITE_URL}`;
   const [descargando, setDescargando] = useState(false);
+  const [creandoGrupo, setCreandoGrupo] = useState(false);
+  const [nombreCreador, setNombreCreador] = useState("");
+  const [creandoGrupoLoading, setCreandoGrupoLoading] = useState(false);
+  const [grupoScores, setGrupoScores] = useState<any[]>([]);
+  const [grupoId, setGrupoId] = useState<string | null>(null);
+  const [jugadorNombre, setJugadorNombre] = useState<string | null>(null);
+
+  const crearGrupo = async () => {
+    const nombre = nombreCreador.trim();
+    if (!nombre) return;
+    setCreandoGrupoLoading(true);
+    try {
+      const res = await fetch("/api/grupos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ creator_name: nombre, score: termismoScore, categoria: categoria.label, perfil: perfil.id }),
+      });
+      const { grupo_id } = await res.json();
+      const grupoUrl = `https://quetantermo.com.ar/grupo/${grupo_id}`;
+      const texto = `Saqué ${termismoScore}/100 en "¿Qué tan termo sos?" 🔥\nPerfil: ${perfil.nombre}\n\n¿Podés superarme? Entrá al ranking del grupo:\n${grupoUrl}`;
+      track("compartido", { canal: "whatsapp_grupo", perfil: perfil.id, score: termismoScore });
+      sendGAEvent("event", "compartido", { canal: "whatsapp_grupo", perfil: perfil.id, score: termismoScore });
+      window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, "_blank");
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setCreandoGrupoLoading(false);
+    }
+  };
 
   const desafiar = () => {
     track("compartido", { canal: "whatsapp", perfil: perfil.id, score: termismoScore });
@@ -645,21 +692,48 @@ function Resultado({ respuestas, onReiniciar }: any) {
           ))}
         </div>
 
-        {/* Desafío viral */}
+        {/* Ranking de grupo */}
         <div style={{ padding: "24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, marginBottom: 24, textAlign: "center" }}>
           <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: "#f1f5f9", marginBottom: 8, letterSpacing: "-0.01em" }}>
-            ¿Tus amigos son más termos que vos?
+            ¿TUS AMIGOS SON MÁS TERMOS QUE VOS?
           </div>
           <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "#64748b", marginBottom: 16 }}>
-            Mandales el desafío y que demuestren cuán termos son.
+            Creá un ranking grupal, mandales el link y que lo demuestren.
           </p>
-          <button onClick={desafiar} style={{
-            width: "100%", padding: "16px", borderRadius: 12, border: "none", cursor: "pointer",
-            background: "linear-gradient(135deg, #f97316, #ef4444)",
-            fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: "0.04em",
-          }}>
-            {copied ? "✓ COPIADO AL PORTAPAPELES" : "🔥 DESAFIALOS (WhatsApp)"}
-          </button>
+          {!creandoGrupo ? (
+            <button onClick={() => setCreandoGrupo(true)} style={{
+              width: "100%", padding: "16px", borderRadius: 12, border: "none", cursor: "pointer",
+              background: "linear-gradient(135deg, #f97316, #ef4444)",
+              fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: "0.04em",
+            }}>
+              🏆 CREAR RANKING Y DESAFIARLOS
+            </button>
+          ) : (
+            <div>
+              <input
+                value={nombreCreador}
+                onChange={(e: any) => setNombreCreador(e.target.value)}
+                onKeyDown={(e: any) => e.key === "Enter" && crearGrupo()}
+                placeholder="Tu nombre"
+                maxLength={30}
+                autoFocus
+                style={{
+                  width: "100%", padding: "14px 16px", borderRadius: 12,
+                  border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.05)",
+                  fontFamily: "var(--font-body)", fontSize: 16, color: "#f1f5f9", marginBottom: 10,
+                }}
+              />
+              <button onClick={crearGrupo} disabled={!nombreCreador.trim() || creandoGrupoLoading} style={{
+                width: "100%", padding: "16px", borderRadius: 12, border: "none",
+                cursor: nombreCreador.trim() && !creandoGrupoLoading ? "pointer" : "not-allowed",
+                background: nombreCreador.trim() ? "linear-gradient(135deg, #f97316, #ef4444)" : "rgba(255,255,255,0.05)",
+                fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 800,
+                color: nombreCreador.trim() ? "#fff" : "#475569", letterSpacing: "0.04em",
+              }}>
+                {creandoGrupoLoading ? "CREANDO..." : "🏆 CREAR Y COMPARTIR POR WHATSAPP"}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Botones de compartir — mobile vs desktop */}
@@ -725,6 +799,31 @@ function Resultado({ respuestas, onReiniciar }: any) {
           </div>
         )}
 
+        {/* Leaderboard de grupo */}
+        {grupoId && grupoScores.length > 0 && (
+          <div style={{ padding: "24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, marginBottom: 24 }}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#475569", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>
+              🏆 RANKING DEL GRUPO — {grupoScores.length} jugador{grupoScores.length !== 1 ? "es" : ""}
+            </div>
+            {grupoScores.map((s: any, i: number) => {
+              const cat = getCategoria(s.score);
+              const esVos = s.player_name === jugadorNombre;
+              return (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: i < grupoScores.length - 1 ? 10 : 0 }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: i === 0 ? "#f97316" : "#475569", width: 24, textAlign: "center", flexShrink: 0 }}>
+                    {i === 0 ? "🥇" : `#${i + 1}`}
+                  </div>
+                  <div style={{ flex: 1, fontFamily: "var(--font-body)", fontSize: 14, color: esVos ? "#f97316" : "#e2e8f0", fontWeight: esVos ? 600 : 400 }}>
+                    {s.player_name}{esVos ? " (vos)" : ""}
+                  </div>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 800, color: cat.color }}>{s.score}</div>
+                  <div style={{ fontSize: 16 }}>{cat.emoji}</div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
         <p style={{ textAlign: "center", marginTop: 14, fontFamily: "var(--font-body)", fontSize: 13, color: "#64748b", lineHeight: 1.4 }}>
           Podés tocar todos los botones que quieras. ¡Compartilo donde quieras! 🚀
         </p>
@@ -740,6 +839,19 @@ function Resultado({ respuestas, onReiniciar }: any) {
             Elijo creer 🙏
           </p>
         </div>
+
+        <div style={{ textAlign: "center", marginTop: 24, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "#475569", marginBottom: 4 }}>
+            Hecho por Mariano Gusis
+          </p>
+          <a href="https://www.linkedin.com/in/mariano-gusis" target="_blank" rel="noopener noreferrer"
+            style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "#475569", textDecoration: "none" }}
+            onMouseEnter={(e: any) => e.currentTarget.style.color = "#94a3b8"}
+            onMouseLeave={(e: any) => e.currentTarget.style.color = "#475569"}
+          >
+            linkedin.com/in/mariano-gusis
+          </a>
+        </div>
       </div>
     </div>
   );
@@ -748,7 +860,13 @@ function Resultado({ respuestas, onReiniciar }: any) {
 // ─── APP ROOT ────────────────────────────────────────────────────────────────
 
 export default function App() {
-  const [pantalla, setPantalla] = useState("landing");
+  const [pantalla, setPantalla] = useState(() => {
+    if (typeof window !== "undefined") {
+      const p = new URLSearchParams(window.location.search);
+      if (p.get("grupo") && p.get("jugador")) return "juego";
+    }
+    return "landing";
+  });
   const [respuestas, setRespuestas] = useState<any[]>([]);
 
   const handleStart = () => {
