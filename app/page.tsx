@@ -30,7 +30,7 @@ const PREGUNTAS = [
   { id: 22, a: { texto: "La Scaloneta", dims: { Pasión: 1, Romanticismo: 1, Modernidad: 2, Racionalidad: 2 } }, b: { texto: "Argentina 1986", dims: { Termismo: 1, Pasión: 2, Romanticismo: 1, Nostalgia: 2 } } },
   { id: 23, a: { texto: "Un ídolo que nunca salió campeón", dims: { Termismo: 1, Pasión: 1, Romanticismo: 2, Nostalgia: 2 } }, b: { texto: "Un campeón que nunca fue ídolo", dims: { Resultadismo: 4, Racionalidad: 2 } } },
   { id: 24, a: { texto: "Ganar 6 a 0", dims: { Romanticismo: 2, Resultadismo: 1, Modernidad: 1, Racionalidad: 2 } }, b: { texto: "Ganar en la última jugada", dims: { Termismo: 2, Pasión: 2, Resultadismo: 2 } } },
-  { id: 25, a: { texto: "Que tu equipo tenga una estrella", dims: { Romanticismo: 3, Pasión: 2, Termismo: 1 } }, b: { texto: "Que tenga once guerreros", dims: { Resultadismo: 2, Termismo: 2, Pasión: 1, AntiSistema: 1 } } },
+  { id: 25, a: { texto: "Que tu equipo tenga una gran figura", dims: { Romanticismo: 3, Pasión: 2, Termismo: 1 } }, b: { texto: "Que tenga once guerreros", dims: { Resultadismo: 2, Termismo: 2, Pasión: 1, AntiSistema: 1 } } },
   { id: 26, a: { texto: "Ser recordado por jugar bien", dims: { Romanticismo: 4, Nostalgia: 1, Pasión: 1 } }, b: { texto: "Ser recordado por ganar", dims: { Resultadismo: 4, Racionalidad: 1, Modernidad: 1 } } },
   { id: 27, a: { texto: "Fillol", dims: { Romanticismo: 3, Nostalgia: 2, Racionalidad: 1 } }, b: { texto: "Dibu Martínez", dims: { Termismo: 2, Pasión: 2, Resultadismo: 1, AntiSistema: 1 } } },
   { id: 28, a: { texto: "Ver campeón a tu club", dims: { Pasión: 2, Termismo: 2, Nostalgia: 1, AntiSistema: 1 } }, b: { texto: "Ver campeón a tu selección", dims: { Pasión: 2, Romanticismo: 2, Modernidad: 1, Resultadismo: 1 } } },
@@ -271,7 +271,14 @@ const DimBar = ({ label, value, color }: any) => (
 
 function Landing({ onStart }: any) {
   const [visible, setVisible] = useState(false);
+  const [totalJugadores, setTotalJugadores] = useState<number | null>(null);
   useEffect(() => { if (!visible) setTimeout(() => setVisible(true), 50); }, []);
+  useEffect(() => {
+    fetch("/api/count")
+      .then((r) => r.json())
+      .then((data) => { if (data.count) setTotalJugadores(data.count); })
+      .catch(() => {});
+  }, []);
 
   return (
     <div style={{
@@ -332,7 +339,12 @@ function Landing({ onStart }: any) {
           EMPEZAR
         </button>
 
-        <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "#475569", marginTop: 14 }}>⏱ Menos de 3 minutos · Gratis · 100% argentino</p>
+        {totalJugadores && (
+          <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "#94a3b8", marginTop: 12 }}>
+            🧉 {totalJugadores.toLocaleString("es-AR")} termos ya lo jugaron
+          </p>
+        )}
+        <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "#475569", marginTop: 6 }}>⏱ Menos de 3 minutos · Gratis · 100% argentino</p>
       </div>
     </div>
   );
